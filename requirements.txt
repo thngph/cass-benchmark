@@ -1,0 +1,4 @@
+cassandra-driver
+pymongo
+mysql-connector-python
+prettytable

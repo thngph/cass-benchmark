@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  cassandra:
+    image: cassandra
+    container_name: cassandra
+    networks:
+      - dbnet
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    networks:
+      - dbnet
+
+  mysql:
+    image: mysql
+    restart: always
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    networks:
+      - dbnet
+
+  hbase:
+    image: harisekhon/hbase
+    container_name: hbase
+    ports:
+      - "16010:16010"
+      - "9090:9090"
+    networks:
+      - dbnet
+
+  python:
+    build: .
+    container_name: python
+    depends_on:
+      - cassandra
+      - mongo
+      - mysql
+      - hbase
+    networks:
+      - dbnet
+
+networks:
+  dbnet:
